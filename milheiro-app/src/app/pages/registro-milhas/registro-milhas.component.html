@@ -1,0 +1,25 @@
+<h2>Registro de Milhas</h2>
+<form (ngSubmit)="onSubmit()">
+  <label for="pessoa">Pessoa:</label>
+  <input type="text" id="pessoa" [(ngModel)]="milha.pessoa" name="pessoa" required>
+  
+  <label for="plataforma">Plataforma:</label>
+  <input type="text" id="plataforma" [(ngModel)]="milha.plataforma" name="plataforma" required>
+
+  <label for="pontos">Pontos:</label>
+  <input type="number" id="pontos" [(ngModel)]="milha.pontos" name="pontos" required>
+
+  <label for="valor">Valor:</label>
+  <input type="number" id="valor" [(ngModel)]="milha.valor" name="valor" required>
+
+  <label for="media">Média:</label>
+  <input type="number" id="media" [(ngModel)]="milha.media" name="media" required>
+
+  <label for="origem">Origem:</label>
+  <input type="text" id="origem" [(ngModel)]="milha.origem" name="origem" required>
+
+  <label for="data">Data:</label>
+  <input type="date" id="data" [(ngModel)]="milha.data" name="data" required>
+
+  <button type="submit">Registrar Milha</button>
+</form>
