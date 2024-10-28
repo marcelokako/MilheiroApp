@@ -5,6 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
+import { HomeComponent } from './pages/home/home.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { RegistroMilhasComponent } from './pages/registro-milhas/registro-milhas.component';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
@@ -15,10 +21,11 @@ const dbConfig: DBConfig = {
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
         { name: 'nome', keypath: 'nome', options: { unique: false } },
+        { name: 'email', keypath: 'email', options: { unique: false } },
       ]
     },
     {
-      store: 'milhas',
+      store: 'pontos_milhas',
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
         { name: 'pessoa', keypath: 'pessoa', options: { unique: false } },
@@ -28,6 +35,8 @@ const dbConfig: DBConfig = {
         { name: 'media', keypath: 'media', options: { unique: false } },
         { name: 'origem', keypath: 'origem', options: { unique: false } },
         { name: 'data', keypath: 'data', options: { unique: false } },
+        { name: 'created_by', keypath: 'created_by', options: { unique: false } },
+        { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
     },
     {
@@ -41,6 +50,8 @@ const dbConfig: DBConfig = {
         { name: 'taxa', keypath: 'taxa', options: { unique: false } },
         { name: 'observacao', keypath: 'observacao', options: { unique: false } },
         { name: 'data', keypath: 'data', options: { unique: false } },
+        { name: 'created_by', keypath: 'created_by', options: { unique: false } },
+        { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
     },
   ]
@@ -48,11 +59,16 @@ const dbConfig: DBConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    DashboardComponent,
+    RegistroMilhasComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    RouterModule.forRoot([]),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
