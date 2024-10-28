@@ -7,6 +7,7 @@ import { MilhasService } from '../../services/milhas.service';
   templateUrl: './registro-milhas.component.html',
   styleUrls: ['./registro-milhas.component.css']
 })
+
 export class RegistroMilhasComponent {
   milha = {
     pessoa: '',
@@ -23,6 +24,7 @@ export class RegistroMilhasComponent {
   constructor(private milhasService: MilhasService) {}
 
   onSubmit() {
+    this.milha.media = this.milha.valor / this.milha.pontos;
     this.milhasService.addMilha(this.milha).subscribe(result => {
       console.log('Milha registrada:', result);
     });

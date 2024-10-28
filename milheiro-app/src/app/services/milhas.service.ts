@@ -10,6 +10,6 @@ export class MilhasService {
   constructor(private db: NgxIndexedDBService) {}
 
   addMilha(milha: any): Observable<number> {
-    return this.db.add('milhas', milha);
+    return this.db.add('pontos_milhas', milha);
   }
 }
