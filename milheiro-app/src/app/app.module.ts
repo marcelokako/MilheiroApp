@@ -11,6 +11,12 @@ import { RegistroMilhasComponent } from './pages/registro-milhas/registro-milhas
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { SidebarLayoutComponent } from './layout/sidebar-layout/sidebar-layout.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
@@ -63,10 +69,15 @@ const dbConfig: DBConfig = {
     HomeComponent,
     DashboardComponent,
     RegistroMilhasComponent,
+    SidebarLayoutComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
     FormsModule,
     RouterModule.forRoot([]),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -77,7 +88,9 @@ const dbConfig: DBConfig = {
     }),
     NgxIndexedDBModule.forRoot(dbConfig)
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
