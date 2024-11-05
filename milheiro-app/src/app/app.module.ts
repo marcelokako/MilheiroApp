@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { PessoasComponent } from './components/pessoas/pessoas.component';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
@@ -70,6 +71,7 @@ const dbConfig: DBConfig = {
     DashboardComponent,
     RegistroMilhasComponent,
     SidebarLayoutComponent,
+    PessoasComponent,
   ],
   imports: [
     BrowserModule,
