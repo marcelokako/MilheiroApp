@@ -21,7 +21,7 @@ import { PessoasComponent } from './components/pessoas/pessoas.component';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
-  version: 1,
+  version: 2,
   objectStoresMeta: [
     {
       store: 'pessoas',
@@ -29,6 +29,7 @@ const dbConfig: DBConfig = {
       storeSchema: [
         { name: 'nome', keypath: 'nome', options: { unique: false } },
         { name: 'email', keypath: 'email', options: { unique: false } },
+        { name: 'selected', keypath: 'selected', options: { unique: false } },
       ]
     },
     {

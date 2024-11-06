@@ -1,5 +1,6 @@
+// pessoas.component.ts
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from '../../services/database.service';
+import { DatabaseService, Pessoa } from '../../services/database.service';
 
 @Component({
   selector: 'app-pessoas',
@@ -7,38 +8,36 @@ import { DatabaseService } from '../../services/database.service';
   styleUrls: ['./pessoas.component.css']
 })
 export class PessoasComponent implements OnInit {
-
-  pessoas: any[] = [];
+  pessoas: Pessoa[] = [];
   nome: string = '';
   email: string = '';
+  selected: boolean = false;
 
-  constructor(private databaseService: DatabaseService) { }
+  constructor(private databaseService: DatabaseService) {}
 
   ngOnInit(): void {
     this.loadPessoas();
   }
 
-  // Carregar todas as pessoas
   loadPessoas() {
     this.databaseService.getPessoas().subscribe((data) => {
       this.pessoas = data;
     });
   }
 
-  // Adicionar uma nova pessoa
   addPessoa() {
-    const newPessoa = { nome: this.nome, email: this.email };
+    const newPessoa: Pessoa = { nome: this.nome, email: this.email, selected: false };
     this.databaseService.addPessoa(newPessoa).subscribe(() => {
-      this.loadPessoas(); // Recarregar a lista após adicionar
+      this.loadPessoas();
       this.nome = '';
       this.email = '';
+      this.selected = false;
     });
   }
 
-  // Remover uma pessoa
   deletePessoa(id: number) {
     this.databaseService.deletePessoa(id).subscribe(() => {
-      this.loadPessoas(); // Recarregar a lista após deletar
+      this.loadPessoas();
     });
   }
 }
