@@ -1,0 +1,75 @@
+label {
+    color: aliceblue
+}
+
+/* Estilo para o card */
+.card {
+    background-color: #f0f8ff; /* Azul claro */
+    border: 1px solid #a1c6ea;  /* Azul suave para borda */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 10px;
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: min-content;
+}
+  
+.card:hover {
+    transform: translateY(-5px);  /* Efeito de elevação ao passar o mouse */
+}
+
+  /* Estilo para o corpo do card */
+.card-body {
+    background-color: aliceblue; /* Fundo branco para destacar o conteúdo */
+    color: #2c3e50;  /* Cor do texto: um tom escuro para contraste */
+    padding: 16px;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+  
+  /* Estilo para o título do card */
+.card-title {
+    font-size: 30px;
+    font-weight: bold;
+    color: #3498db;
+    text-align: center;
+    align-self: center;
+}
+  
+  /* Estilo para o card de destaque */
+.card.highlight {
+    background-color: #eaf4ff; /* Azul claro para destacar */
+    border-color: #3498db; /* Azul mais forte na borda */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+  
+.card.highlight .card-title {
+    color: #2980b9;  /* Cor do título mais intensa para destaque */
+}
+  
+  /* Estilo para o card selecionado */
+.selected {
+    transform: scale(0.98); /* Efeito de pressionado */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+
+    border: 4px solid #010030; /* Azul escuro para destacar */
+}
+  
+  /* Animação de exibição do formulário */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+  
+.fade-in-slide-up {
+    animation: fadeInSlideUp 0.3s ease-out;
+}
+  

@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
+import { NgxIndexedDBModule, DBConfig, NgxIndexedDBService } from 'ngx-indexed-db';
 import { HomeComponent } from './pages/home/home.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RegistroMilhasComponent } from './pages/registro-milhas/registro-milhas.component';
@@ -17,17 +17,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon'
+import { PessoasComponent } from './components/pessoas/pessoas.component';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
-  version: 1,
+  version: 2,
   objectStoresMeta: [
     {
       store: 'pessoas',
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
-        { name: 'nome', keypath: 'nome', options: { unique: false } },
+        { name: 'nome', keypath: 'nome', options: { unique: true } },
         { name: 'email', keypath: 'email', options: { unique: false } },
+        { name: 'selected', keypath: 'selected', options: { unique: false } },
       ]
     },
     {
@@ -70,6 +73,7 @@ const dbConfig: DBConfig = {
     DashboardComponent,
     RegistroMilhasComponent,
     SidebarLayoutComponent,
+    PessoasComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +81,8 @@ const dbConfig: DBConfig = {
     AppRoutingModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatIconModule,
+    CommonModule,
     MatListModule,
     FormsModule,
     RouterModule.forRoot([]),
@@ -93,4 +99,8 @@ const dbConfig: DBConfig = {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(private ngxIndexedDBService: NgxIndexedDBService){
+    this.ngxIndexedDBService = ngxIndexedDBService;
+  }
+}

@@ -1,10 +1,22 @@
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav mode="side" opened>
-        <mat-toolbar>Menu</mat-toolbar>
+        <a routerLink="/pessoas"> 
+            <mat-toolbar><mat-icon>person</mat-icon>     {{ pessoaSelecionada }}</mat-toolbar>
+        </a>
         <mat-nav-list>
-            <a mat-list-item routerLink="/">Home</a>
+            <a mat-list-item routerLink="/">
+                <mat-icon>home</mat-icon>
+                <span>
+                    Home
+                </span>
+            </a>
             <!-- <a mat-list-item routerLink="/pessoas">Pessoas</a> -->
-            <a mat-list-item routerLink="/dashboard">Dashboard</a>
+            <a mat-list-item routerLink="/dashboard">
+                <mat-icon>dashboard</mat-icon>
+                <span>
+                    Dashboard
+                </span>
+            </a>
             <a mat-list-item routerLink="/registro-milhas">ADD Milhas</a>
         </mat-nav-list>
     </mat-sidenav>
