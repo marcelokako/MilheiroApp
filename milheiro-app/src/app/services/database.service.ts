@@ -52,4 +52,27 @@ export class DatabaseService {
       });
     }) 
   }
+
+  selectPessoa(id: number): Observable<void>{
+    return new Observable<void>((observer)=>{
+      this.dbService.getAll<Pessoa>("pessoas").subscribe((pessoas)=>{
+        const pessoasUpdate = pessoas.map((pessoa)=>(
+          {
+            ...pessoa,
+            selected: pessoa.id === id
+          }
+      ));
+
+        this.dbService.bulkPut("pessoas", pessoasUpdate).subscribe({
+          next: () => {
+            observer.next();
+            observer.complete();
+          },
+          error: (e) => {
+            observer.error(e);
+          }
+        });
+      });
+    });
+  }
 }
