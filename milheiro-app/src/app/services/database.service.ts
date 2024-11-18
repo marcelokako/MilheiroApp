@@ -56,18 +56,23 @@ export class DatabaseService {
   }
 
   selectPessoa(id: number): Observable<void>{
+    
     return new Observable<void>((observer)=>{
       this.getPessoas().subscribe((pessoas)=>{
-        pessoas.forEach((p) => (p.selected = p.id === id));
 
-        Promise.all(pessoas.map((p) => this.dbService.update('pessoas', p)))
-          .then(() => {
+        pessoas.forEach((p) => (p.selected = p.id === id));
+        
+        this.dbService.bulkPut("pessoas", pessoas).subscribe({
+          next: () => {
             const novaPessoaSelecionada = pessoas.find((p) => p.selected) || null;
             this.pessoaSelecionadaSubject.next(novaPessoaSelecionada);
             observer.next();
             observer.complete();
-          })
-          .catch((e)=> observer.error(e));
+          },
+          error: (e) => {
+            observer.error(e);
+          }
+        });
       });
     });
   }

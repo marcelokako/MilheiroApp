@@ -1,6 +1,10 @@
 <div class="container mx-auto mt-5">
     <div class="grid grid-cols-2 gap-4">
-        <div *ngFor="let pessoa of pessoas" class="mb-4 col-5">
+        <div *ngFor="let pessoa of pessoas" class="mb-4 col-5" 
+            (mousedown)="onHoldStart(pessoa)"
+            (mouseup)="onHoldEnd()"
+            (mouseleave)="onHoldEnd()"
+        >
             <div class="card" [ngClass]="{'selected': pessoa.selected}" (click)="selectPessoa(pessoa.id)">
                 <div class="card-body">
                     <div class="card-title">{{ pessoa.nome }}</div>
