@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface Pessoa {
   id?: number;
@@ -13,19 +13,21 @@ export interface Pessoa {
   providedIn: 'root'
 })
 export class DatabaseService {
-  constructor(private dbService: NgxIndexedDBService) {}
+  private pessoaSelecionadaSubject = new BehaviorSubject<Pessoa | null>(null);
+  pessoaSelecionada$ = this.pessoaSelecionadaSubject.asObservable();
+
+  constructor(private dbService: NgxIndexedDBService) {
+    this.getPessoaSelecionada();
+  }
 
   getPessoas(): Observable<Pessoa[]> {
     return this.dbService.getAll<Pessoa>('pessoas');
   }
 
-  getPessoaSelecionada(): Observable<Pessoa | undefined> {
-    return new Observable<Pessoa | undefined>((observer) => {
-      this.dbService.getAll<Pessoa>('pessoas').subscribe((pessoas) => {
-        const pessoaSelecionada = pessoas.find((pessoa) => pessoa.selected);
-        observer.next(pessoaSelecionada);
-        observer.complete();
-      });
+  private getPessoaSelecionada() {
+    this.getPessoas().subscribe((pessoas) => {
+      const pessoaSelecionada = pessoas.find((p) => p.selected) || null;
+      this.pessoaSelecionadaSubject.next(pessoaSelecionada);
     });
   }
 
@@ -55,23 +57,17 @@ export class DatabaseService {
 
   selectPessoa(id: number): Observable<void>{
     return new Observable<void>((observer)=>{
-      this.dbService.getAll<Pessoa>("pessoas").subscribe((pessoas)=>{
-        const pessoasUpdate = pessoas.map((pessoa)=>(
-          {
-            ...pessoa,
-            selected: pessoa.id === id
-          }
-      ));
+      this.getPessoas().subscribe((pessoas)=>{
+        pessoas.forEach((p) => (p.selected = p.id === id));
 
-        this.dbService.bulkPut("pessoas", pessoasUpdate).subscribe({
-          next: () => {
+        Promise.all(pessoas.map((p) => this.dbService.update('pessoas', p)))
+          .then(() => {
+            const novaPessoaSelecionada = pessoas.find((p) => p.selected) || null;
+            this.pessoaSelecionadaSubject.next(novaPessoaSelecionada);
             observer.next();
             observer.complete();
-          },
-          error: (e) => {
-            observer.error(e);
-          }
-        });
+          })
+          .catch((e)=> observer.error(e));
       });
     });
   }

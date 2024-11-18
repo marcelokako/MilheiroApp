@@ -76,4 +76,7 @@ label {
 .modal {
     left: 200px;
 }
-  
+
+.modal-content {
+    background-color: #2c3e50;
+}

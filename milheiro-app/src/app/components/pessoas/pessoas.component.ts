@@ -1,7 +1,6 @@
 // pessoas.component.ts
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DatabaseService, Pessoa } from '../../services/database.service';
-import { CommonModule } from '@angular/common'; 
 
 
 @Component({
@@ -14,7 +13,6 @@ export class PessoasComponent implements OnInit {
   nome: string = '';
   email: string = '';
   selected: boolean = false;
-
   showForm: boolean = false;
 
   constructor(private databaseService: DatabaseService) {}
@@ -24,8 +22,8 @@ export class PessoasComponent implements OnInit {
   }
 
   loadPessoas() {
-    this.databaseService.getPessoas().subscribe((data) => {
-      this.pessoas = data;
+    this.databaseService.getPessoas().subscribe((p) => {
+      this.pessoas = p;
     });
   }
 

@@ -13,28 +13,9 @@ export class SidebarLayoutComponent implements OnInit {
   constructor(private databaseService: DatabaseService) {}
 
   ngOnInit(): void {
-    this.carregarPessoaSelecionada();
+    this.databaseService.pessoaSelecionada$.subscribe(pessoa => {
+      this.pessoaSelecionada = pessoa ? pessoa.nome : 'Selecione';
+    })
   }
-
-  carregarPessoaSelecionada() {
-    this.databaseService.getPessoaSelecionada().subscribe(
-      (pessoa: Pessoa | undefined) => {
-        if (pessoa) {
-          this.pessoaSelecionada = pessoa.nome;
-        } else {
-          this.databaseService.getPessoas().subscribe((pessoas) => {
-            if (pessoas.length > 0) {
-              this.pessoaSelecionada = 'Selecione';
-            } else {
-              this.pessoaSelecionada = 'Criar Pessoa';
-            }
-          });
-        }
-      },
-      (error) => {
-        console.error('Erro ao carregar pessoa selecionada:', error);
-        this.pessoaSelecionada = 'Erro';
-      }
-    );
-  }
+  
 }
