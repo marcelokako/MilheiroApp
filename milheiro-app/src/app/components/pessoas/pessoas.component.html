@@ -12,8 +12,8 @@
             </div>
         </div>
         <div class="col-5 mb-4">
-            <div (click)="toggleForm()" class="card" [ngClass]="{'selected': showForm}">
-                <div class="card-body">
+            <div class="card" [ngClass]="{'selected': showForm}">
+                <div (click)="addPessoa()" class="card-body">
                     <div class="card-title" style="transform: scale(2)"><mat-icon>person_add</mat-icon></div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<div
+<!-- <div
   *ngIf="showForm"
   class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 modal"
 >
@@ -61,5 +61,5 @@
         </div>
     </form>
   </div>
-</div>
+</div> -->
   

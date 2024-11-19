@@ -22,6 +22,8 @@ import { PessoasComponent } from './components/pessoas/pessoas.component';
 import { ModalConfirmacaoComponent } from './components/modal-confirmacao/modal-confirmacao.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { PessoaModalComponent } from './components/pessoa-modal/pessoa-modal.component';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
@@ -78,6 +80,7 @@ const dbConfig: DBConfig = {
     SidebarLayoutComponent,
     PessoasComponent,
     ModalConfirmacaoComponent,
+    PessoaModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,8 +92,10 @@ const dbConfig: DBConfig = {
     CommonModule,
     MatListModule,
     FormsModule,
+    MatLabel,
     MatDialogModule,
     MatButtonModule,
+    MatFormFieldModule,
     RouterModule.forRoot([]),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

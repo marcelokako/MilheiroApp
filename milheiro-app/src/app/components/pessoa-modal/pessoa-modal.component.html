@@ -1,0 +1,35 @@
+<div class="modal-content">
+    <h2 mat-dialog-title><mat-icon>person_add</mat-icon>   Cadastro de Pessoa</h2>
+
+    <mat-dialog-content>
+      <form>
+        <div class="form-group w-full">
+            <label class="font-bold" for="nomePessoa">Nome: </label>
+            <input
+            id="nomePessoa"
+            type="text"
+            class="form-control rounded w-full p-3"
+            [(ngModel)]="nome"
+            name="nome"
+            required
+            >
+        </div>
+        
+        <div class="form-group mt-3">
+            <label class="font-bold" for="email">E-mail: </label>
+            <input
+            id="email"
+            type="email"
+            class="form-control rounded w-full p-3"
+            [(ngModel)]="email"
+            name="email"
+            required
+            >
+        </div>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="cancelar()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+    </mat-dialog-actions>
+</div>

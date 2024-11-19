@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService, Pessoa } from '../../services/database.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalConfirmacaoComponent } from '../modal-confirmacao/modal-confirmacao.component';
+import { ModalManagerService } from '../../services/modal-manager.service';
 
 
 @Component({
@@ -19,7 +20,11 @@ export class PessoasComponent implements OnInit {
   holdTimeout: any;
 
 
-  constructor(private databaseService: DatabaseService, private dialog: MatDialog) {}
+  constructor(
+    private databaseService: DatabaseService, 
+    private dialog: MatDialog,
+    private modalManager: ModalManagerService
+  ) {}
 
   ngOnInit(): void {
     this.loadPessoas();
@@ -32,25 +37,27 @@ export class PessoasComponent implements OnInit {
   }
 
   addPessoa() {
-    const newPessoa: Pessoa = { nome: this.nome, email: this.email, selected: false };
-    if(!newPessoa.nome || !newPessoa.email){
-      alert("Informações de cadastro inválidas");
-    } else {
 
-      this.databaseService.addPessoa(newPessoa).subscribe({
-        next: (idAdd) => {
-          this.nome = '';
-          this.email = '';
-          this.selected = false;
-          
-          this.showForm = false;
-          this.selectPessoa(idAdd);
-        },
-        error: (e)=>{
-          console.error("Erro ao add pessoa: ", e)
-        }
-      });
-    }
+    const newPessoa: Pessoa = { nome: this.nome, email: this.email, selected: false };
+    this.modalManager.openPessoaModal(newPessoa).subscribe((data_pessoa)=>{
+      if(data_pessoa){
+        
+        this.databaseService.addPessoa(data_pessoa).subscribe({
+          next: (idAdd) => {
+            this.nome = '';
+            this.email = '';
+            this.selected = false;
+            
+            this.showForm = false;
+            this.selectPessoa(idAdd);
+          },
+          error: (e)=>{
+            console.error("Erro ao adicionar pessoa: ", e)
+          }
+        });
+      }
+    })
+    
   }
 
   selectPessoa(id: number | undefined){
