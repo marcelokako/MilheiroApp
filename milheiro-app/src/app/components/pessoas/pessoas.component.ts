@@ -1,4 +1,3 @@
-// pessoas.component.ts
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService, Pessoa } from '../../services/database.service';
 import { MatDialog } from '@angular/material/dialog';

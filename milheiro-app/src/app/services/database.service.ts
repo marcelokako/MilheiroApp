@@ -8,7 +8,17 @@ export interface Pessoa {
   email: string;
   selected: boolean;
 }
-
+export interface Plataforma {
+  id?: number;
+  pessoa_id: number,
+  created_by: number,
+  plataforma: string,
+  pontos: number,
+  valor_total: number,
+  custo_ponto: number,
+  created_at: string,
+  updated_at: string,
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +34,7 @@ export class DatabaseService {
     return this.dbService.getAll<Pessoa>('pessoas');
   }
 
+  // ----------------------- PESSOA ----------------------- //
   private getPessoaSelecionada() {
     this.getPessoas().subscribe((pessoas) => {
       const pessoaSelecionada = pessoas.find((p) => p.selected) || null;
@@ -75,5 +86,18 @@ export class DatabaseService {
         });
       });
     });
+  }
+
+  // ----------------------- PLATAFORMA ----------------------- //
+  addPlataforma(plataforma: Plataforma): Observable<Plataforma>{
+    return new Observable<Plataforma>((observer)=>{
+      this.dbService.add<Plataforma>('plataformas', plataforma).subscribe({
+        next: (plataforma) => {
+          observer.next(plataforma);
+          observer.complete();
+        },
+        error: (e) => observer.error(e)
+      });
+    }) 
   }
 }
