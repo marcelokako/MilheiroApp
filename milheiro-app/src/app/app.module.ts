@@ -24,6 +24,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { PessoaModalComponent } from './components/pessoa-modal/pessoa-modal.component';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
@@ -96,6 +98,8 @@ const dbConfig: DBConfig = {
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatMenuModule,
+    MatMenuTrigger,
     RouterModule.forRoot([]),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

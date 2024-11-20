@@ -9,13 +9,23 @@ import { DatabaseService, Pessoa } from '../../services/database.service';
 })
 export class SidebarLayoutComponent implements OnInit {
   pessoaSelecionada: string = 'Selecione';
+  pessoas: Pessoa[] = []
 
   constructor(private databaseService: DatabaseService) {}
 
   ngOnInit(): void {
+    this.databaseService.getPessoas().subscribe(pessoas=>{
+      this.pessoas = pessoas;
+    });
     this.databaseService.pessoaSelecionada$.subscribe(pessoa => {
       this.pessoaSelecionada = pessoa ? pessoa.nome : 'Selecione';
-    })
+    });
+  }
+
+  selecionarPessoa(pessoa: Pessoa) {
+    this.databaseService.selectPessoa(pessoa.id!).subscribe(() => {
+      this.pessoaSelecionada = pessoa.nome;
+    });
   }
   
 }
