@@ -29,7 +29,7 @@ import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
-  version: 2,
+  version: 3,
   objectStoresMeta: [
     {
       store: 'pessoas',
@@ -41,16 +41,31 @@ const dbConfig: DBConfig = {
       ]
     },
     {
+      store: 'plataformas',
+      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeSchema: [
+        { name: 'plataforma', keypath: 'plataforma', options: { unique: false } },
+        { name: 'pessoa_id', keypath: 'pessoa_id', options: { unique: false } },
+        { name: 'pontos', keypath: 'pontos', options: { unique: false } },
+        { name: 'valor_total', keypath: 'valor_total', options: { unique: false } },
+        { name: 'custo_ponto', keypath: 'custo_ponto', options: { unique: false } },
+        { name: 'updated_at', keypath: 'data', options: { unique: false } },
+        { name: 'created_by', keypath: 'created_by', options: { unique: false } },
+        { name: 'created_at', keypath: 'created_at', options: { unique: false } },
+      ]
+    },
+    {
       store: 'pontos_milhas',
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
-        { name: 'pessoa', keypath: 'pessoa', options: { unique: false } },
-        { name: 'plataforma', keypath: 'plataforma', options: { unique: false } },
+        { name: 'pessoa_id', keypath: 'pessoa_id', options: { unique: false } },
+        { name: 'plataforma_id', keypath: 'plataforma_id', options: { unique: false } },
         { name: 'pontos', keypath: 'pontos', options: { unique: false } },
         { name: 'valor', keypath: 'valor', options: { unique: false } },
-        { name: 'media', keypath: 'media', options: { unique: false } },
-        { name: 'origem', keypath: 'origem', options: { unique: false } },
+        { name: 'custo_ponto', keypath: 'custo_ponto', options: { unique: false } },
+        { name: 'descricao', keypath: 'descricao', options: { unique: false } },
         { name: 'data', keypath: 'data', options: { unique: false } },
+        { name: 'data_expiracao', keypath: 'data_expiracao', options: { unique: false } },
         { name: 'created_by', keypath: 'created_by', options: { unique: false } },
         { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
@@ -59,7 +74,7 @@ const dbConfig: DBConfig = {
       store: 'transferencias',
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
-        { name: 'pessoa', keypath: 'pessoa', options: { unique: false } },
+        { name: 'pessoa_id', keypath: 'pessoa_id', options: { unique: false } },
         { name: 'plataforma_origem', keypath: 'plataforma_origem', options: { unique: false } },
         { name: 'plataforma_destino', keypath: 'plataforma_destino', options: { unique: false } },
         { name: 'pontos', keypath: 'pontos', options: { unique: false } },
