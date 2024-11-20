@@ -1,4 +1,3 @@
-// pessoas.component.ts
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService, Pessoa } from '../../services/database.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -48,7 +47,6 @@ export class PessoasComponent implements OnInit {
             this.email = '';
             this.selected = false;
             
-            this.showForm = false;
             this.selectPessoa(idAdd);
           },
           error: (e)=>{
@@ -57,7 +55,6 @@ export class PessoasComponent implements OnInit {
         });
       }
     })
-    
   }
 
   selectPessoa(id: number | undefined){

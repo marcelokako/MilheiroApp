@@ -1,0 +1,23 @@
+<div class="modal-content">
+    <h2 mat-dialog-title><mat-icon>add</mat-icon>   Cadastro de Plataforma</h2>
+
+    <mat-dialog-content>
+      <form>
+        <div class="form-group w-full">
+            <label class="font-bold" for="plataforma_nome">Nome Plataforma: </label>
+            <input
+            id="plataforma_nome"
+            type="text"
+            class="form-control rounded w-full p-3"
+            [(ngModel)]="plataforma_nome"
+            name="plataforma_nome"
+            required
+            >
+        </div>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="cancelar()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+    </mat-dialog-actions>
+</div>
