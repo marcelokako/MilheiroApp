@@ -100,4 +100,8 @@ export class DatabaseService {
       });
     }) 
   }
+
+  getPlataformasPessoa(pessoa_id: number): Observable<Plataforma[]>{
+    return this.dbService.getAllByIndex("plataformas", "pessoa_id", IDBKeyRange.only(pessoa_id));
+  }
 }
