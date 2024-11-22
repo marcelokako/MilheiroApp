@@ -1,0 +1,37 @@
+<div class="modal-content">
+    <h2 mat-dialog-title><mat-icon>control_point</mat-icon>   Adicionar Pontos</h2>
+
+    <mat-dialog-content>
+      <form>
+        <div class="form-group w-full flex justify-around">
+            <div class="col-span-6">
+                <label class="font-bold" for="selectPessoa">Pessoa: </label>
+                <select id="selectPessoa" class="form-control rounded w-full p-3">
+                    <option *ngFor="let pessoa of pessoas" 
+                    class="form-control rounded"
+                    [value]="pessoa.id" 
+                    [selected]="pessoa.selected"
+                    (click)="loadPlataformas(pessoa.id || pessoaSelecionada_id)"
+                    >
+                        {{ pessoa.nome }}
+                    </option>
+                    <!-- reload ao clicar em pessoa selecionada ainda não funciona -->
+                </select>
+            </div>
+            <div class="col-span-6">
+                <label class="font-bold" for="selectPlataforma">Plataforma: </label>
+                <select id="selectPlataforma" class="form-control rounded w-full p-3">
+                    <option *ngFor="let plataforma of plataformas" [value]="plataforma.id" class="form-control rounded">
+                        {{ plataforma.plataforma }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">    
+      <button mat-button (click)="cancelar()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+    </mat-dialog-actions>
+</div>

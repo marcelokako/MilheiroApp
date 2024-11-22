@@ -30,5 +30,13 @@ export class HomeComponent {
         });
       }
     })
+  
+  }
+  AddPonto(){
+    this.modalManager.openAddPontosModal().subscribe((data_plataforma)=>{
+      if(data_plataforma){
+        
+      }
+    })
   }
 }
