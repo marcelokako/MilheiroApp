@@ -10,13 +10,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AddPontosModalComponent {
 
   pessoaSelecionada_id: number = 0;
+  selectPessoa_option: number = 0;
   pessoas: Pessoa[] = [];
   plataformas: Plataforma[] = [];
-  plataforma_id: string = '';
+  plataforma_id: number = 0;
   plataforma_nome: string = '';
   data: string = '';
-  pontos: number = 0
-  valor: number = 0
+  pontos: number = 0;
+  valor: number = 0;
+  custo_ponto: string = '0,00';
   data_expiracao: string = '';
   descricao: string = '';
 
@@ -28,7 +30,7 @@ export class AddPontosModalComponent {
     if (obj) {
       this.plataforma_id = obj.plataforma_id || '';
       this.plataforma_nome = obj.plataforma_nome || '';
-      this.data = obj.data || '';
+      this.data = obj.data || new Date(Date.now()).toISOString().slice(0,10);
       this.pontos = obj.pontos || 0;
       this.valor = obj.valor || 0;
       this.data_expiracao = obj.data_expiracao || '';
@@ -37,16 +39,23 @@ export class AddPontosModalComponent {
   }
   
   ngOnInit(): void {
+    this.loadPessoas();
     this.databaseService.pessoaSelecionada$.subscribe(pessoa => {
       this.pessoaSelecionada_id = pessoa ? pessoa.id??0 : 0;
-      this.loadPessoas();
+      this.selectPessoa_option = this.pessoaSelecionada_id
       this.loadPlataformas(this.pessoaSelecionada_id);
     });
+    this.calcular_custo_ponto()
   }
 
-  loadPlataformas(pessoa_id: number) {
-    this.databaseService.getPlataformasPessoa(pessoa_id).subscribe((plataformas) => {
-      this.plataformas = plataformas;
+  loadPlataformas(pessoa_id: number) {  
+   
+    if (pessoa_id == 0) {
+      this.plataformas = [];
+      return;
+    }
+    this.databaseService.getPlataformasPessoa(Number(pessoa_id)).subscribe((plataformas) => {
+      this.plataformas = plataformas;      
     });
   }
 
@@ -65,15 +74,25 @@ export class AddPontosModalComponent {
     //   alert('Preencha todos os campos.');
     //   return;
     // }
-    // this.dialogRef.close({ 
-    //   pessoa_id: this.pessoaSelecionada_id,
-    //   created_by: this.pessoaSelecionada_id, 
-    //   plataforma: this.plataforma_nome,
-    //   pontos: this.pontos,
-    //   valor_total: this.valor,
-    //   custo_ponto: this.pontos / this.valor,
-    //   created_at: new Date(Date.now()).toLocaleString().replace(',',''),
-    //   updated_at: new Date(Date.now()).toLocaleString().replace(',','')
-    // });
+    const dadosSalvar = {
+      pessoa_id: this.pessoaSelecionada_id,
+      plataforma_id: this.plataforma_id,
+      pontos: this.pontos,
+      valor_total: this.valor,
+      custo_ponto: parseFloat(this.custo_ponto),
+      descricao: this.descricao,
+      data_expiracao: this.data_expiracao,
+      data_criacao: new Date().toISOString(),
+    };
+  
+    this.dialogRef.close(dadosSalvar);
+  }
+
+  calcular_custo_ponto(){
+    if(this.pontos == 0 || this.valor == 0){
+      this.custo_ponto = '0,00';
+    } else {
+      this.custo_ponto = (Number(this.pontos) / Number(this.valor)).toFixed(2);
+    }
   }
 }
