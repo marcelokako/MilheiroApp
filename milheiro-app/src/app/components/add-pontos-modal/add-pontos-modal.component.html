@@ -1,0 +1,89 @@
+<div class="modal-content">
+    <h2 mat-dialog-title><mat-icon>control_point</mat-icon>   Adicionar Pontos</h2>
+
+    <mat-dialog-content>
+      <form>
+        <div class="form-group w-full flex justify-around">
+            <div class="col-span-6">
+                <label class="font-bold" for="selectPessoa_option">Pessoa*: </label>
+                <select id="selectPessoa_option" name="selectPessoa_option"
+                class="form-control rounded w-full p-3 border" 
+                [(ngModel)]="selectPessoa_option"
+                (change)="loadPlataformas(selectPessoa_option)"
+                >
+                    <option *ngFor="let pessoa of pessoas" 
+                    class="form-control rounded"
+                    [value]="pessoa.id" 
+                    [selected]="pessoa.selected"
+                    >
+                        {{ pessoa.nome }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-span-6">
+                <label class="font-bold" for="plataformas">Plataforma*: </label>
+                <select 
+                id="plataformas" name="plataformas" 
+                class="form-control rounded w-full p-3 border"
+                [(ngModel)]="plataforma_id" 
+                >
+                    <option *ngFor="let plataforma of plataformas" [value]="plataforma.id">
+                        {{ plataforma.plataforma }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-3 form-group w-full flex justify-around">
+            <div class="col-span-4 mx-1">
+                <label class="font-bold" for="pontos">Pontos*: </label>
+                <input type="number" name="pontos" step="50"
+                class="form-control rounded w-full p-3 border" min="0"
+                [(ngModel)]="pontos"
+                (keyup)="calcular_custo_ponto()"
+                >
+            </div>
+            <div class="col-span-4 mx-1">
+                <label class="font-bold" for="valor">Valor*: </label>
+                <input type="number" name="valor" step="50"
+                class="form-control rounded w-full p-3 border" min="0"
+                [(ngModel)]="valor"
+                (keyup)="calcular_custo_ponto()"
+                >
+            </div>
+            <div class="col-span-4 mx-1">
+                <label class="font-bold" for="custo_ponto">Valor p/ ponto: </label>
+                <input type="text" name="custo_ponto" readonly
+                class="form-control rounded w-full p-3 border"
+                [(ngModel)]="custo_ponto">
+            </div>
+        </div>
+        <div class="mt-3 form-group w-full flex justify-around">
+            <div class="col-span-6 mx-1">
+                <label class="font-bold" for="data">Data Aquisição*: </label>
+                <input type="date" name="data"
+                class="form-control rounded w-full p-3 border"
+                [(ngModel)]="data"
+                >
+            </div>
+            <div class="col-span-6 mx-1">
+                <label class="font-bold" for="data_expiracao" title="Pode ser inserida depois">Data Expiração: </label>
+                <input type="date" name="data_expiracao"
+                class="form-control rounded w-full p-3 border"
+                [(ngModel)]="data_expiracao"
+                >
+            </div>
+        </div>
+        <div class="mt-3 form-group w-full">
+            <label class="font-bold" for="descricao">Descrição: </label>
+            <textarea name="descricao" 
+            class="form-control rounded w-full p-3 border resize-none"
+            [(ngModel)]="descricao"></textarea>
+
+        </div>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">    
+      <button mat-button (click)="cancelar()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+    </mat-dialog-actions>
+</div>

@@ -26,6 +26,7 @@ import { PessoaModalComponent } from './components/pessoa-modal/pessoa-modal.com
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { PlataformaModalComponent } from './components/plataforma-modal/plataforma-modal.component';
+import { AddPontosModalComponent } from './components/add-pontos-modal/add-pontos-modal.component';
 
 
 const dbConfig: DBConfig = {
@@ -100,6 +101,7 @@ const dbConfig: DBConfig = {
     ModalConfirmacaoComponent,
     PessoaModalComponent,
     PlataformaModalComponent,
+    AddPontosModalComponent,
   ],
   imports: [
     BrowserModule,
