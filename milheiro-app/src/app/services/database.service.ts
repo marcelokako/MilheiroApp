@@ -10,14 +10,27 @@ export interface Pessoa {
 }
 export interface Plataforma {
   id?: number;
-  pessoa_id: number,
-  created_by: number,
-  plataforma: string,
-  pontos: number,
-  valor_total: number,
-  custo_ponto: number,
-  created_at: string,
-  updated_at: string,
+  pessoa_id: number;
+  created_by: number;
+  plataforma: string;
+  pontos: number;
+  valor_total: number;
+  custo_ponto: number;
+  created_at: string;
+  updated_at: string;
+}
+export interface PontoMilha {
+  id?: number;
+  pessoa_id: number;
+  plataforma_id: number;
+  pontos: number;
+  valor: number;
+  custo_ponto: number;
+  descricao: string;
+  data: string;
+  data_expiracao: string;
+  created_at: string;
+  created_by: string;
 }
 @Injectable({
   providedIn: 'root'
@@ -103,5 +116,20 @@ export class DatabaseService {
 
   getPlataformasPessoa(pessoa_id: number): Observable<Plataforma[]>{
     return this.dbService.getAllByIndex("plataformas", "pessoa_id", IDBKeyRange.only(pessoa_id));
+  }
+
+  // ----------------------- PONTOS ----------------------- //
+  AddPonto(obj_ponto: PontoMilha): Observable<PontoMilha>{
+    console.log(obj_ponto);
+    
+    return new Observable<PontoMilha>((observer)=>{
+      this.dbService.add<PontoMilha>('pontos_milhas', obj_ponto).subscribe({
+        next: (obj_ponto) => {
+          observer.next(obj_ponto); 
+          observer.complete();
+        },
+        error: (e) => observer.error(e)
+      });
+    }) 
   }
 }

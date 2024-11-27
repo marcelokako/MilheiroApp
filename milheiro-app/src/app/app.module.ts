@@ -27,6 +27,7 @@ import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { PlataformaModalComponent } from './components/plataforma-modal/plataforma-modal.component';
 import { AddPontosModalComponent } from './components/add-pontos-modal/add-pontos-modal.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 const dbConfig: DBConfig = {
@@ -119,6 +120,7 @@ const dbConfig: DBConfig = {
     MatFormFieldModule,
     MatMenuModule,
     MatMenuTrigger,
+    MatSnackBarModule,
     RouterModule.forRoot([]),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

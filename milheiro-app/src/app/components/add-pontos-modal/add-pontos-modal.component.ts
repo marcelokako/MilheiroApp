@@ -70,21 +70,23 @@ export class AddPontosModalComponent {
   }
 
   salvar(): void {
-    // if (!this.plataforma_nome || this.pessoaSelecionada_id == 0) {
-    //   alert('Preencha todos os campos.');
-    //   return;
-    // }
+    if (this.selectPessoa_option <= 0 || !this.plataforma_id || this.pontos <= 0 || !this.data) {
+      alert('Preencha todos os campos obrigatórios.');
+      return;
+    }
     const dadosSalvar = {
-      pessoa_id: this.pessoaSelecionada_id,
-      plataforma_id: this.plataforma_id,
+      pessoa_id: this.selectPessoa_option,
+      plataforma_id: Number(this.plataforma_id),
       pontos: this.pontos,
       valor_total: this.valor,
       custo_ponto: parseFloat(this.custo_ponto),
       descricao: this.descricao,
+      data: this.data,
       data_expiracao: this.data_expiracao,
-      data_criacao: new Date().toISOString(),
+      created_at: new Date(Date.now()).toLocaleString().replace(',',''),
+      created_by: this.pessoaSelecionada_id
     };
-  
+
     this.dialogRef.close(dadosSalvar);
   }
 
