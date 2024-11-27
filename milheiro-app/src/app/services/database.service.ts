@@ -119,12 +119,12 @@ export class DatabaseService {
   }
 
   // ----------------------- PONTOS ----------------------- //
-  AddPonto(obj_ponto: PontoMilha): Observable<PontoMilha>{
-    console.log(obj_ponto);
-    
+  AddPonto(obj_ponto: PontoMilha): Observable<PontoMilha>{    
     return new Observable<PontoMilha>((observer)=>{
       this.dbService.add<PontoMilha>('pontos_milhas', obj_ponto).subscribe({
         next: (obj_ponto) => {
+          
+          this.recalcularTotaisPlataforma(obj_ponto.plataforma_id, obj_ponto.pessoa_id);
           observer.next(obj_ponto); 
           observer.complete();
         },
@@ -132,4 +132,50 @@ export class DatabaseService {
       });
     }) 
   }
+
+  recalcularTotaisPlataforma(plataforma_id: number, pessoa_id: number) {    
+    return this.dbService
+      .getAllByIndex('pontos_milhas', 'plataforma_id', IDBKeyRange.only(plataforma_id))
+      .subscribe({
+        next: (registrosPontos: any) => {
+          const dataHoje = new Date();
+  
+          const todosPontosPlataforma = registrosPontos.filter((registroPontos: any) => {
+            const flag_pessoa_id = registroPontos.pessoa_id === pessoa_id;
+            const flag_data_expiracao =
+              !registroPontos.data_expiracao || new Date(registroPontos.data_expiracao) > dataHoje;
+  
+            return flag_pessoa_id && flag_data_expiracao;
+          });
+  
+          const total_pontos = todosPontosPlataforma.reduce((acc: any, p: any) => acc + Number(p.pontos), 0);
+          const total_custo = todosPontosPlataforma.reduce((acc: any, p: any) => acc + Number(p.valor_total), 0);
+          const custo_ponto = total_custo > 0 ? (total_pontos / total_custo).toFixed(2) : 0;
+
+          this.dbService.getByID('plataformas', plataforma_id).subscribe({
+            
+            next: (plataforma: any) => {
+              if (plataforma) {
+                plataforma.pontos = total_pontos;
+                plataforma.valor_total = total_custo;
+                plataforma.custo_ponto = custo_ponto;
+
+                this.dbService.update('plataformas', plataforma).subscribe((storeData) => {
+                });
+                
+              } else {
+                console.warn(`Plataforma com ID ${plataforma_id} não encontrada.`);
+              }
+            },
+            error: (err) =>{
+              console.warn(`Erro ao atualizar plataforma com ID ${plataforma_id}.`);
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Erro ao recalcular totais da plataforma:', err);
+        },
+      });
+  }
+  
 }
