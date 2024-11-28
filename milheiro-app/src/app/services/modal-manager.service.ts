@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { PessoaModalComponent } from '../components/pessoa-modal/pessoa-modal.component';
 import { PlataformaModalComponent } from '../components/plataforma-modal/plataforma-modal.component';
 import { AddPontosModalComponent } from '../components/add-pontos-modal/add-pontos-modal.component';
+import { Plataforma } from './database.service';
+import { CalculadoraModalComponent } from '../components/calculadora-modal/calculadora-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +45,15 @@ export class ModalManagerService {
     }): Observable<any> {
     const dialogRef = this.dialog.open(AddPontosModalComponent, {
       width: '60%',
+      data: data || {},
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  openCalculadoraModal(data?: Plataforma): Observable<any> {
+    const dialogRef = this.dialog.open(CalculadoraModalComponent, {
+      width: '40%',
       data: data || {},
     });
 

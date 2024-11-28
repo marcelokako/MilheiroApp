@@ -1,0 +1,162 @@
+<div class="modal-content">
+    <h2 mat-dialog-title>
+      <mat-icon>calculate</mat-icon> Calculadora: Pontos vs. Dinheiro
+    </h2>
+  
+    <div class="p-4 bg-gray-100 rounded shadow mt-4">
+        <div class="form-group w-full flex justify-around">
+            <div class="w-32">
+                <label class="font-bold" for="selectPessoa_option">Pessoa: </label>
+                <select id="selectPessoa_option" name="selectPessoa_option"
+                class="form-control rounded w-full p-3 border"
+                [(ngModel)]="selectPessoa_option"
+                (change)="loadPlataformas(selectPessoa_option)"
+                >
+                    <option *ngFor="let pessoa of pessoas" 
+                    class="form-control rounded"
+                    [value]="pessoa.id" 
+                    [selected]="pessoa.selected"
+                    >
+                        {{ pessoa.nome }}
+                    </option>
+                </select>
+            </div>
+            <div class="w-32">
+                <label class="font-bold" for="plataformas">Plataforma: </label>
+                <select 
+                id="plataformas" name="plataformas" 
+                class="form-control rounded w-full p-3 border"
+                [(ngModel)]="plataformaSelecionada"
+                (change)="atualizaValoresInputs()"
+                >
+                    <option *ngFor="let plataforma of plataformas" [ngValue]="plataforma" 
+                    >
+                        {{ plataforma.plataforma }}
+                    </option>
+                </select>
+            </div>
+            <div class="w-44">
+                <label class="font-bold" for="pontos_disponiveis">Pontos Disponíveis: </label>
+                <input id="pontos_disponiveis" name="pontos_disponiveis"
+                class="form-control rounded w-full p-3 border"
+                readonly type="number" 
+                [value]="pontos_disponiveis" >
+            </div>
+        </div>
+    </div>
+    <mat-dialog-content>
+      <form>
+        <!-- Seção Principal -->
+        <div class="form-group w-full flex justify-around">
+          <!-- Coluna de Pontos -->
+          <div class="w-1/2 p-2 border-r border-gray-300">
+            <h3 class="text-lg font-bold mb-4">Pontos</h3>
+            <div class="mb-4">
+              <label class="font-bold" for="preco_pontos">Preço em Pontos*: </label>
+              <input
+                type="number"
+                name="preco_pontos"
+                class="form-control rounded w-full p-3 border"
+                min="0"
+                [(ngModel)]="preco_pontos"
+                (keyup)="calcularResultado()"
+                #input_preco_pontos
+                (focus)="selecionarTexto(input_preco_pontos)"
+                
+              />
+            </div>
+            <div class="mb-4">
+                <label class="font-bold" for="taxa_embarque_pontos">Taxa de Embarque (R$)*: </label>
+                <input
+                  type="number"
+                  name="taxa_embarque_pontos"
+                  class="form-control rounded w-full p-3 border"
+                  min="0"
+                  [(ngModel)]="taxa_embarque_pontos"
+                  (keyup)="calcularResultado()"
+                  #input_taxa_embarque_pontos
+                  (focus)="selecionarTexto(input_taxa_embarque_pontos)"
+                />
+            </div>
+            <div class="mb-4">
+              <label class="font-bold" for="valor_ponto">Custo Milheiro (R$): </label>
+              <input
+                type="number" readonly
+                name="valor_ponto"
+                class="form-control rounded w-full p-3 border"
+                step="0.01"
+                min="0"
+                [(ngModel)]="valor_ponto"
+                (keyup)="calcularResultado()"
+                #input_valor_ponto
+                (focus)="selecionarTexto(input_valor_ponto)"
+              />
+            </div>
+          
+          </div>
+  
+          <!-- Coluna de Dinheiro -->
+          <div class="w-1/2 p-2">
+            <h3 class="text-lg font-bold mb-4">Dinheiro</h3>
+            <div class="mb-4">
+              <label class="font-bold" for="preco_dinheiro">Preço da Passagem (R$)*: </label>
+              <input
+                type="number"
+                name="preco_dinheiro"
+                class="form-control rounded w-full p-3 border"
+                min="0"
+                [(ngModel)]="preco_dinheiro"
+                (keyup)="calcularResultado()"
+                #input_preco_dinheiro
+                (focus)="selecionarTexto(input_preco_dinheiro)"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="font-bold" for="taxa_embarque_dinheiro">Taxa de Embarque (R$)*: </label>
+              <input
+                type="number"
+                name="taxa_embarque_dinheiro"
+                class="form-control rounded w-full p-3 border"
+                min="0"
+                [(ngModel)]="taxa_embarque_dinheiro"
+                (keyup)="calcularResultado()"
+                #input_taxa_embarque_dinheiro
+                (focus)="selecionarTexto(input_taxa_embarque_dinheiro)"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="font-bold" for="pontos_acumulados">Pontos Acumulados na Compra: </label>
+              <input
+                type="number"
+                name="pontos_acumulados"
+                class="form-control rounded w-full p-3 border"
+                min="0"
+                [(ngModel)]="pontos_acumulados"
+                (keyup)="calcularResultado()"
+                #input_pontos_acumulados
+                (focus)="selecionarTexto(input_pontos_acumulados)"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-dialog-content>
+  
+    <!-- Ações -->
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="cancelar()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="calcularResultado()">Calcular</button>
+    </mat-dialog-actions>
+  </div>
+  
+  <!-- Resultado -->
+  <div class="p-4 bg-gray-100 rounded shadow mt-4">
+    <h3 class="text-lg font-bold">Resultado:</h3>
+    <p *ngIf="resultadoPontosDinheiro; else noResult">
+      {{ resultadoPontosDinheiro }}
+    </p>
+    <ng-template #noResult>
+      <p class="text-gray-500">Insira os dados para calcular.</p>
+    </ng-template>
+  </div>
+  
