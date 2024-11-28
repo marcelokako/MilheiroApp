@@ -7,7 +7,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgxIndexedDBModule, DBConfig, NgxIndexedDBService } from 'ngx-indexed-db';
 import { HomeComponent } from './pages/home/home.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { RegistroMilhasComponent } from './pages/registro-milhas/registro-milhas.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -113,7 +112,6 @@ const dbConfig: DBConfig = {
     AppComponent,
     HomeComponent,
     DashboardComponent,
-    RegistroMilhasComponent,
     SidebarLayoutComponent,
     PessoasComponent,
     ModalConfirmacaoComponent,
