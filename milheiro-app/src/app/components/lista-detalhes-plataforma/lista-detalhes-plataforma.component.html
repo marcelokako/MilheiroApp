@@ -23,7 +23,7 @@
     <mat-tab-group>
       <!-- Aba de Todos os Pontos -->
       <mat-tab label="Todos os Pontos">
-        <div *ngIf="pontos_milhas??[].length > 0; else vazioPontos">
+        <div *ngIf="pontos_milhas.length > 0; else vazioPontos">
           
             <table class="table w-full">
                 <thead class="border-b">
@@ -59,7 +59,7 @@
   
       <!-- Aba de Recorrências -->
       <mat-tab label="Recorrências">
-        <div *ngIf="pontos_recorrencia??[].length > 0; else vazioRecorrencias">
+        <div *ngIf="pontos_recorrencia.length > 0; else vazioRecorrencias">
             <table class="table">
                 <thead class="border-b">
                     <tr>
