@@ -7,7 +7,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgxIndexedDBModule, DBConfig, NgxIndexedDBService } from 'ngx-indexed-db';
 import { HomeComponent } from './pages/home/home.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { RegistroMilhasComponent } from './pages/registro-milhas/registro-milhas.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -28,10 +27,12 @@ import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { PlataformaModalComponent } from './components/plataforma-modal/plataforma-modal.component';
 import { AddPontosModalComponent } from './components/add-pontos-modal/add-pontos-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ListaDetalhesPlataformaComponent } from './components/lista-detalhes-plataforma/lista-detalhes-plataforma.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
-  version: 4,
+  version: 5,
   objectStoresMeta: [
     {
       store: 'pessoas',
@@ -100,6 +101,7 @@ const dbConfig: DBConfig = {
         { name: 'pontos', keypath: 'pontos', options: { unique: false } },
         { name: 'valor', keypath: 'valor', options: { unique: false } },
         { name: 'descricao', keypath: 'descricao', options: { unique: false } },
+        { name: 'validade', keypath: 'validade', options: { unique: false } },
         { name: 'created_by', keypath: 'created_by', options: { unique: false } },
         { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
@@ -112,13 +114,13 @@ const dbConfig: DBConfig = {
     AppComponent,
     HomeComponent,
     DashboardComponent,
-    RegistroMilhasComponent,
     SidebarLayoutComponent,
     PessoasComponent,
     ModalConfirmacaoComponent,
     PessoaModalComponent,
     PlataformaModalComponent,
     AddPontosModalComponent,
+    ListaDetalhesPlataformaComponent,
   ],
   imports: [
     BrowserModule,
@@ -137,6 +139,7 @@ const dbConfig: DBConfig = {
     MatMenuModule,
     MatMenuTrigger,
     MatSnackBarModule,
+    MatTabsModule,
     RouterModule.forRoot([]),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
