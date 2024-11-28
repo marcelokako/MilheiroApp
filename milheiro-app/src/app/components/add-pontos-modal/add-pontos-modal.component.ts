@@ -15,12 +15,13 @@ export class AddPontosModalComponent {
   plataformas: Plataforma[] = [];
   plataforma_id: number = 0;
   plataforma_nome: string = '';
-  data: string = '';
+  data_aquisicao: string = '';
   pontos: number = 0;
   valor: number = 0;
   custo_ponto: string = '0,00';
   data_expiracao: string = '';
   descricao: string = '';
+  recorrencia_tipo: string = 'N';
 
   constructor(
     private databaseService: DatabaseService, 
@@ -30,11 +31,13 @@ export class AddPontosModalComponent {
     if (obj) {
       this.plataforma_id = obj.plataforma_id || '';
       this.plataforma_nome = obj.plataforma_nome || '';
-      this.data = obj.data || new Date(Date.now()).toISOString().slice(0,10);
+      this.data_aquisicao = obj.data_aquisicao || new Date(Date.now()).toISOString().slice(0,10);
       this.pontos = obj.pontos || 0;
       this.valor = obj.valor || 0;
       this.data_expiracao = obj.data_expiracao || '';
       this.descricao = obj.descricao || '';
+      this.recorrencia_tipo = obj.recorrencia_tipo || "N";
+
     }
   }
   
@@ -45,7 +48,7 @@ export class AddPontosModalComponent {
       this.selectPessoa_option = this.pessoaSelecionada_id
       this.loadPlataformas(this.pessoaSelecionada_id);
     });
-    this.calcular_custo_ponto()
+    this.calcular_custo_ponto();
   }
 
   loadPlataformas(pessoa_id: number) {  
@@ -70,21 +73,28 @@ export class AddPontosModalComponent {
   }
 
   salvar(): void {
-    if (this.selectPessoa_option <= 0 || !this.plataforma_id || this.pontos <= 0 || !this.data) {
+    if (this.selectPessoa_option <= 0 || !this.plataforma_id || this.pontos <= 0 || !this.data_aquisicao) {
       alert('Preencha todos os campos obrigatórios.');
       return;
+    }
+    if(this.recorrencia_tipo != 'N'){
+      if(!this.descricao){
+        alert('Descrição é obrigatório quando há recorrência.');
+      }
     }
     const dadosSalvar = {
       pessoa_id: this.selectPessoa_option,
       plataforma_id: Number(this.plataforma_id),
       pontos: this.pontos,
-      valor_total: this.valor,
+      valor: this.valor,
       custo_ponto: parseFloat(this.custo_ponto),
       descricao: this.descricao,
-      data: this.data,
+      data_aquisicao: this.data_aquisicao,
       data_expiracao: this.data_expiracao,
       created_at: new Date(Date.now()).toLocaleString().replace(',',''),
-      created_by: this.pessoaSelecionada_id
+      created_by: this.pessoaSelecionada_id,
+      recorrencia_tipo: this.recorrencia_tipo,
+      recorrencia_id: 0,
     };
 
     this.dialogRef.close(dadosSalvar);
@@ -94,7 +104,12 @@ export class AddPontosModalComponent {
     if(this.pontos == 0 || this.valor == 0){
       this.custo_ponto = '0,00';
     } else {
-      this.custo_ponto = (Number(this.pontos) / Number(this.valor)).toFixed(2);
+      let custo_bruto = Number(this.valor) / Number(this.pontos);
+      this.custo_ponto = (custo_bruto*1000).toFixed(2);
     }
+  }
+
+  selecionarTexto(input: HTMLInputElement): void {
+    input.select();
   }
 }

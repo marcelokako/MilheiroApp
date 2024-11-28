@@ -40,32 +40,44 @@
                 class="form-control rounded w-full p-3 border" min="0"
                 [(ngModel)]="pontos"
                 (keyup)="calcular_custo_ponto()"
+                #inputPontos
+                (focus)="selecionarTexto(inputPontos)"
                 >
             </div>
             <div class="col-span-4 mx-1">
                 <label class="font-bold" for="valor">Valor*: </label>
-                <input type="number" name="valor" step="50"
+                <input type="number" name="valor" step="500"
                 class="form-control rounded w-full p-3 border" min="0"
                 [(ngModel)]="valor"
                 (keyup)="calcular_custo_ponto()"
+                #inputValor
+                (focus)="selecionarTexto(inputValor)"
                 >
             </div>
             <div class="col-span-4 mx-1">
-                <label class="font-bold" for="custo_ponto">Valor p/ ponto: </label>
+                <label class="font-bold" for="custo_ponto" title="R$ / 1000 milhas">Custo do milheiro: </label>
                 <input type="text" name="custo_ponto" readonly
                 class="form-control rounded w-full p-3 border"
                 [(ngModel)]="custo_ponto">
             </div>
         </div>
         <div class="mt-3 form-group w-full flex justify-around">
-            <div class="col-span-6 mx-1">
-                <label class="font-bold" for="data">Data Aquisição*: </label>
-                <input type="date" name="data"
+            <div class="col-span-4 mx-1">
+                <label class="font-bold" for="data_aquisicao">Data Aquisição*: </label>
+                <input type="date" name="data_aquisicao"
                 class="form-control rounded w-full p-3 border"
-                [(ngModel)]="data"
+                [(ngModel)]="data_aquisicao"
                 >
             </div>
-            <div class="col-span-6 mx-1">
+            <div class="col-span-4 mx-1">
+                <label class="font-bold" for="data_aquisicao">Recorrência: </label>
+                <select name="recorrencia_tipo" class="form-control rounded w-full p-3 border" [(ngModel)]="recorrencia_tipo">
+                    <option value="N">Nenhuma</option>
+                    <option value="M">Mensalmente</option>
+                    <option value="A">Anualmente</option>
+                </select>
+            </div>
+            <div class="col-span-4 mx-1">
                 <label class="font-bold" for="data_expiracao" title="Pode ser inserida depois">Data Expiração: </label>
                 <input type="date" name="data_expiracao"
                 class="form-control rounded w-full p-3 border"

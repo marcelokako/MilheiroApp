@@ -33,11 +33,13 @@ export class ModalManagerService {
       pessoa_id: number,
       plataforma_id?: number,
       plataforma_nome?: string,
-      data? :string,
+      data_aquisicao? :string,
       pontos: number,
       valor: number,
       data_expiracao?: string,
-      descricao?: string
+      descricao?: string,
+      recorrencia_tipo: string,
+      recorrencia_id: number
     }): Observable<any> {
     const dialogRef = this.dialog.open(AddPontosModalComponent, {
       width: '60%',
