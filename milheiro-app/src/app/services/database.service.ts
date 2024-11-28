@@ -31,7 +31,7 @@ export interface PontoMilha {
   data_expiracao?: string;
   created_at: string;
   created_by: string;
-  recorrencia_id?: number;
+  recorrencia_id: number;
   recorrencia_tipo: "N" | "M" | "A";
 }
 @Injectable({
@@ -127,6 +127,7 @@ export class DatabaseService {
 
       // VERIFICA SE HOUVE RECORRENCIA
       if(["M", "A"].includes(obj_ponto.recorrencia_tipo)){
+        let validade = this.calcularDiferencaMeses(obj_ponto.data_expiracao??"", obj_ponto.data_aquisicao);
 
         const novaRecorrencia = {
           recorrencia_tipo: obj_ponto.recorrencia_tipo,
@@ -139,6 +140,7 @@ export class DatabaseService {
           pontos: obj_ponto.pontos,
           valor: obj_ponto.valor,
           descricao: obj_ponto.descricao,
+          validade: validade,
           created_by: obj_ponto.created_by,
           created_at: obj_ponto.created_at,
         };
@@ -146,30 +148,43 @@ export class DatabaseService {
         this.dbService.add("pontos_recorrencia", novaRecorrencia).subscribe({
           next: (recorrencia_id: any)=>{
             console.log('Registro recorrente criado:', novaRecorrencia);
+            console.log('obj_ponto: ', obj_ponto.recorrencia_id);
+            console.log('recorrencia_id: ', recorrencia_id.id);
             obj_ponto.recorrencia_id = recorrencia_id.id;
+            this.dbService.add<PontoMilha>('pontos_milhas', obj_ponto).subscribe({
+              next: (novo_ponto) => {
+                console.log('Ponto milha adicionado criando recorrencia:', novo_ponto);
+      
+                this.recalcularTotaisPlataforma(novo_ponto.plataforma_id, novo_ponto.pessoa_id);
+                observer.next(novo_ponto); 
+                observer.complete();
+              },
+              error: (err) => {
+                console.error('Erro ao adicionar ponto milha:', err);
+                observer.error(err);
+              }
+            });
           },
           error: (err)=>{
             console.error('Erro ao criar registro recorrente:', err);
             observer.error(err); 
           }
         })
-      }
-      console.log("teste: recorrencia_id: ", obj_ponto);
-      
-      this.dbService.add<PontoMilha>('pontos_milhas', obj_ponto).subscribe({
-        next: (novo_ponto) => {
-          console.log('Ponto milha adicionado:', novo_ponto);
-
-          this.recalcularTotaisPlataforma(novo_ponto.plataforma_id, novo_ponto.pessoa_id);
-          observer.next(novo_ponto); 
-          observer.complete();
-        },
-        error: (err) => {
-          console.error('Erro ao adicionar ponto milha:', err);
-          observer.error(err);
-        }
-      });
-
+      } else {
+        this.dbService.add<PontoMilha>('pontos_milhas', obj_ponto).subscribe({
+          next: (novo_ponto) => {
+            console.log('Ponto milha adicionado sem criar recorrencia:', novo_ponto);
+  
+            this.recalcularTotaisPlataforma(novo_ponto.plataforma_id, novo_ponto.pessoa_id);
+            observer.next(novo_ponto); 
+            observer.complete();
+          },
+          error: (err) => {
+            console.error('Erro ao adicionar ponto milha:', err);
+            observer.error(err);
+          }
+        });
+      }      
     }) 
   }
 
@@ -244,27 +259,33 @@ export class DatabaseService {
           const dataProxima = new Date(recorrencia.proxima_criacao);
     
           if (dataHoje >= dataProxima) {
-            console.log('entrou datahj > dataproxima');
+            console.log('Ponto Recorrente irá gerar novo registro automaticamente!');
 
-            const novoRegistro = { // FALTA UM MÓI DE COLUNA PRA CÁ, VAI POSSIVELMENTE CORRIGIR UM BUG QUE ATUALIZA REGISTRO PRA ANUAL PQ N TEM RECORRENCIA TIPO AQUI DENTRO
-              pessoa_id: recorrencia.pessoa_id,
+            const novoRegistro = {
+              created_by: recorrencia.created_by,
               plataforma_id: recorrencia.plataforma_id,
-              data_criacao: dataHoje.toISOString().split('T')[0],
-              data_expiracao: recorrencia.recorrencia === 'M'
-                ? new Date(dataProxima.setMonth(dataProxima.getMonth() + 1)).toISOString().split('T')[0] // MENSALMENTE
-                : new Date(dataProxima.setFullYear(dataProxima.getFullYear() + 1)).toISOString().split('T')[0], // ANUALMENTE
+              recorrencia_id: recorrencia.id,
+              data_aquisicao: recorrencia.proxima_criacao,
+              created_at: dataHoje.toISOString().split('T')[0],
+              pessoa_id: recorrencia.pessoa_id,
               pontos: recorrencia.pontos,
               valor: recorrencia.valor,
-              recorrencia_id: recorrencia.id,
+              custo_ponto: 1,
+              data_expiracao: new Date(dataProxima.setMonth(dataProxima.getMonth() + recorrencia.validade)).toISOString().split('T')[0],
+              descricao: recorrencia.descricao
             };
             
             return new Observable<void>((subObserver) => {
               this.dbService.add('pontos_milhas', novoRegistro).subscribe({
                 next: () =>{    
                   console.log('novoRegistro: ', novoRegistro);
+                  const nova_data_proxima_criacao = new Date(novoRegistro.data_aquisicao); 
 
-                  recorrencia.ultima_criacao = dataHoje.toISOString().split('T')[0];
-                  recorrencia.proxima_criacao = novoRegistro.data_expiracao;
+                  recorrencia.ultima_criacao = novoRegistro.data_aquisicao;
+                  recorrencia.proxima_criacao = recorrencia.recorrencia_tipo == "M"
+                    ? new Date(nova_data_proxima_criacao.setMonth(nova_data_proxima_criacao.getMonth() + 1)).toISOString().split('T')[0]
+                    : new Date(nova_data_proxima_criacao.setFullYear(nova_data_proxima_criacao.getFullYear() + 1)).toISOString().split('T')[0]
+
                   this.dbService.update('pontos_recorrencia', recorrencia).subscribe({
                     next: () => {
                       console.log('update_recorrencia: ', recorrencia);
@@ -308,5 +329,22 @@ export class DatabaseService {
     });
   }
 
-
+  calcularDiferencaMeses(data1: string, data2: string): number {
+    const d1 = new Date(data1);
+    const d2 = new Date(data2);
+    if(!data2 || isNaN(d1.getTime())){
+      return 0;
+    }
+  
+    const anos = d1.getFullYear() - d2.getFullYear();
+    const meses = d1.getMonth() - d2.getMonth();
+  
+    let diferencaMeses = anos * 12 + meses;
+  
+    if (d1.getDate() < d2.getDate()) {
+      diferencaMeses -= 1;
+    }
+  
+    return diferencaMeses;
+  }
 }

@@ -31,7 +31,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
-  version: 4,
+  version: 5,
   objectStoresMeta: [
     {
       store: 'pessoas',
@@ -100,6 +100,7 @@ const dbConfig: DBConfig = {
         { name: 'pontos', keypath: 'pontos', options: { unique: false } },
         { name: 'valor', keypath: 'valor', options: { unique: false } },
         { name: 'descricao', keypath: 'descricao', options: { unique: false } },
+        { name: 'validade', keypath: 'validade', options: { unique: false } },
         { name: 'created_by', keypath: 'created_by', options: { unique: false } },
         { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
