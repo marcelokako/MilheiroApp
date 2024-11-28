@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatabaseService, Pessoa, Plataforma } from '../../services/database.service';
 
 @Component({
@@ -31,8 +31,13 @@ export class CalculadoraModalComponent {
   constructor(
     public dialogRef: MatDialogRef<CalculadoraModalComponent>,
     private databaseService: DatabaseService, 
-
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: Plataforma
+  ) {        
+    this.plataformaSelecionada = data;
+    this.pontos_disponiveis = data.pontos??0;
+    this.valor_ponto = data.custo_ponto??"0,00";
+    this.loadPlataformas(data.pessoa_id);
+  }
 
   ngOnInit(): void {
     this.loadPessoas();
@@ -94,9 +99,7 @@ export class CalculadoraModalComponent {
     }
   }
 
-  atualizaValoresInputs(): void{
-    console.log(this.plataformaSelecionada);
-    
+  atualizaValoresInputs(): void{  
     this.valor_ponto = this.plataformaSelecionada?.custo_ponto??0;
     this.pontos_disponiveis = this.plataformaSelecionada?.pontos??0
   }

@@ -29,7 +29,7 @@
                 [(ngModel)]="plataformaSelecionada"
                 (change)="atualizaValoresInputs()"
                 >
-                    <option *ngFor="let plataforma of plataformas" [ngValue]="plataforma" 
+                    <option *ngFor="let plataforma of plataformas" [ngValue]="plataforma" [selected]="plataformaSelecionada?.id==plataforma.id"
                     >
                         {{ plataforma.plataforma }}
                     </option>
@@ -143,9 +143,8 @@
     </mat-dialog-content>
   
     <!-- Ações -->
-    <mat-dialog-actions align="end">
+    <mat-dialog-actions align="start">
       <button mat-button (click)="cancelar()">Cancelar</button>
-      <button mat-raised-button color="primary" (click)="calcularResultado()">Calcular</button>
     </mat-dialog-actions>
   </div>
   

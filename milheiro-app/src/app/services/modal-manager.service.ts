@@ -53,7 +53,7 @@ export class ModalManagerService {
 
   openCalculadoraModal(data?: Plataforma): Observable<any> {
     const dialogRef = this.dialog.open(CalculadoraModalComponent, {
-      width: '40%',
+      width: '60%',
       data: data || {},
     });
 
