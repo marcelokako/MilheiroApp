@@ -11,7 +11,7 @@ label {
     padding: 16px;
     margin: 10px;
     transition: transform 0.3s ease;
-    width: 100%;
+    width: 85%;
     height: min-content;
 }
   
@@ -30,7 +30,7 @@ label {
   
   /* Estilo para o título do card */
 .card-title {
-    font-size: 30px;
+    font-size: 1.5em;
     font-weight: bold;
     color: aliceblue;
     text-align: center;
@@ -38,7 +38,7 @@ label {
 }
 
 .card-text {
-    font-size: 20px;
+    font-size: 1em;
     font-weight: bold;
     color: aliceblue;
     text-align: left;
