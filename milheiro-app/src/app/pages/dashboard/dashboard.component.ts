@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DatabaseService, Plataforma } from '../../services/database.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,8 @@ export class DashboardComponent {
   pessoaSelecionada_id: number = 0;
 
   constructor(
-    private databaseService: DatabaseService, 
+    private databaseService: DatabaseService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -28,6 +30,13 @@ export class DashboardComponent {
     this.databaseService.getPlataformasPessoa(pessoa_id).subscribe((plataformas) => {
       this.plataformas = plataformas;
     });
+  }
+
+  abrirListaDetalhesPlataforma(plataforma_id: number){
+    if(plataforma_id == 0){
+      return;
+    }
+    this.router.navigate(['/dashboard', plataforma_id]);
   }
 }
 

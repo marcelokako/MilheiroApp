@@ -116,6 +116,18 @@ export class DatabaseService {
     }) 
   }
 
+  getPlataforma(plataforma_id: number): Observable<Plataforma> {
+    return this.dbService.getByID("plataformas", plataforma_id);
+  }
+
+  getRegistrosPlataforma(plataforma_id: number): Observable<PontoMilha[]> {
+    return this.dbService.getAllByIndex("pontos_milhas", "plataforma_id", IDBKeyRange.only(plataforma_id));
+  }
+
+  getRecorrenciasPlataforma(plataforma_id: number): Observable<any[]> {
+    return this.dbService.getAllByIndex("pontos_recorrencia", "plataforma_id", IDBKeyRange.only(plataforma_id));
+  }
+
   getPlataformasPessoa(pessoa_id: number): Observable<Plataforma[]>{
     return this.dbService.getAllByIndex("plataformas", "pessoa_id", IDBKeyRange.only(pessoa_id));
   }

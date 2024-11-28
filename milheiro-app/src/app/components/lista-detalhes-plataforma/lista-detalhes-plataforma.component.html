@@ -1,0 +1,91 @@
+<div>
+    <div class="row w-full flex justify-between">
+        <h4 class="col-sm-10 text-white py-2 mb-0 pb-0 font-bold col-10">Detalhes {{ plataforma.plataforma }}</h4>
+        
+        <button class="col-sm font-semibold px-4 rounded bg-slate-600 text-white hover:bg-slate-500 float-right">
+            <a routerLink="/dashboard">Voltar ao Dashboard</a>
+        </button>
+    </div>
+    <div class="row flex justify-around mt-3">
+        <div class="font-semibold">Pontos: {{ plataforma.pontos }}</div>
+        <div class="font-semibold">Custo: {{ plataforma.valor_total }}</div>
+        <div class="font-semibold" title="Custo por 1000 milhas">Custo Milheiro: {{ plataforma.custo_ponto }}</div>
+    </div>
+</div>
+
+<div>
+    <!-- Tabs -->
+    <mat-tab-group>
+      <!-- Aba de Todos os Pontos -->
+      <mat-tab label="Todos os Pontos">
+        <div *ngIf="pontos_milhas??[].length > 0; else vazioPontos">
+          
+            <table class="table">
+                <thead class="border-b">
+                    <tr>
+                        <th>#</th>
+                        <th>Pontos</th>
+                        <th>Custo</th>
+                        <th>Custo Milheiro</th>
+                        <th>Data Aquisição</th>
+                        <th>Data Expiração</th>
+                        <th>Recorrencia</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ponto of pontos_milhas" class="text-center border-blue-50">
+                        <td class="px-1 border-r">{{ ponto.id }}</td>
+                        <td class="px-1 border-r">{{ ponto.pontos }}</td>
+                        <td class="px-1 border-r">{{ ponto.valor }}</td>
+                        <td class="px-1 border-r">{{ ponto.custo_ponto }}</td>
+                        <td class="px-1 border-r">{{ ponto.data_aquisicao }}</td>
+                        <td class="px-1 border-r">{{ !!ponto.data_expiracao ? ponto.data_expiracao : "-" }}</td>
+                        <td class="px-1 border-r">{{ ponto.recorrencia_tipo == "M" ? "Mensal" : (ponto.recorrencia_tipo == "A" ? "Anual" : "-") }}</td>
+                        <td class="px-1">{{ !!ponto.descricao ? ponto.descricao : "-" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #vazioPontos>
+          <p>Nenhum registro de pontos encontrado para esta plataforma.</p>
+        </ng-template>
+      </mat-tab>
+  
+      <!-- Aba de Recorrências -->
+      <mat-tab label="Recorrências">
+        <div *ngIf="pontos_recorrencia??[].length > 0; else vazioRecorrencias">
+            <table class="table">
+                <thead class="border-b">
+                    <tr>
+                        <th>#</th>
+                        <th>Pontos</th>
+                        <th>Custo</th>
+                        <th>Última Ocorrência</th>
+                        <th>Próxima Ocorrência</th>
+                        <th>Tipo</th>
+                        <th>Validade</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let recorrencia of pontos_recorrencia" class="text-center border-blue-50">
+                        <td class="px-1 border-r">{{ recorrencia.id }}</td>
+                        <td class="px-1 border-r">{{ recorrencia.pontos }}</td>
+                        <td class="px-1 border-r">{{ recorrencia.valor }}</td>
+                        <td class="px-1 border-r">{{ recorrencia.ultima_criacao }}</td>
+                        <td class="px-1 border-r">{{ recorrencia.proxima_criacao }}</td>
+                        <td class="px-1 border-r">{{ recorrencia.recorrencia_tipo == "M" ? "Mensal" : "Anual" }}</td>
+                        <td class="px-1 border-r">{{ recorrencia.validade == 0 ? "-" : (recorrencia.validade + (recorrencia.validade == 1 ? " Mês" : " Meses") ) }}</td>
+                        <td class="px-1 ">{{ !!recorrencia.descricao ? recorrencia.descricao : "-" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #vazioRecorrencias>
+          <p>Nenhum registro de recorrência encontrado para esta plataforma.</p>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  

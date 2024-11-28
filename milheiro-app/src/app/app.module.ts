@@ -27,6 +27,8 @@ import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { PlataformaModalComponent } from './components/plataforma-modal/plataforma-modal.component';
 import { AddPontosModalComponent } from './components/add-pontos-modal/add-pontos-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ListaDetalhesPlataformaComponent } from './components/lista-detalhes-plataforma/lista-detalhes-plataforma.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
@@ -118,6 +120,7 @@ const dbConfig: DBConfig = {
     PessoaModalComponent,
     PlataformaModalComponent,
     AddPontosModalComponent,
+    ListaDetalhesPlataformaComponent,
   ],
   imports: [
     BrowserModule,
@@ -136,6 +139,7 @@ const dbConfig: DBConfig = {
     MatMenuModule,
     MatMenuTrigger,
     MatSnackBarModule,
+    MatTabsModule,
     RouterModule.forRoot([]),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
