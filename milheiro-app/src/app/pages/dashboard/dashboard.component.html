@@ -1,13 +1,18 @@
 <div class="container mx-auto mt-5">
-    <div class="grid grid-cols-2 gap-4">
-        <div *ngFor="let plataforma of plataformas" class="mb-4 col-5">
-            <div class="card"   (click)="abrirListaDetalhesPlataforma(plataforma.id??0)">
-                <div class="card-body">
-                    <div class="card-title mb-4">{{ plataforma.plataforma }}</div>
-                    <div class="card-text">Pontos: {{ plataforma.pontos }}</div>
-                    <div class="card-text" title="Custo por 1000 milhas">Custo Milheiro: {{ plataforma.custo_ponto }}</div>
+    <div *ngIf="plataformas.length > 0; else vazioDashboard">
+        <div class="grid grid-cols-1">
+            <div *ngFor="let plataforma of plataformas" class="mb-4 col-5">
+                <div class="card"   (click)="abrirListaDetalhesPlataforma(plataforma.id??0)">
+                    <div class="card-body">
+                        <div class="card-title mb-4">{{ plataforma.plataforma }}</div>
+                        <div class="card-text">Pontos: {{ plataforma.pontos }}</div>
+                        <div class="card-text" title="Custo por 1000 milhas">Custo Milheiro: {{ plataforma.custo_ponto }}</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <ng-template #vazioDashboard>
+        <p class="text-center text-gray-500">Nenhuma plataforma cadastrada.</p>
+    </ng-template>
 </div>

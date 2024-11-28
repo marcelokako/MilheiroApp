@@ -4,13 +4,13 @@
 }
 
 mat-sidenav {
-    width: 200px;
+    width: 15%;
     /* background: linear-gradient(to right,hsl(236, 50%, 50%), hsl(195, 51%, 38%)); */
     background: linear-gradient(to right, hsl(210, 30%, 20%), hsl(255, 30%, 25%));
 }
 
 .content {
-    padding: 16px;
+    padding: 8px;
 }
 
 mat-toolbar {

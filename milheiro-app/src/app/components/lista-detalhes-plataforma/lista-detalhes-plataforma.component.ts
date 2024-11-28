@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DatabaseService, Plataforma, PontoMilha } from '../../services/database.service';
 import { ActivatedRoute } from '@angular/router';
+import { ModalManagerService } from '../../services/modal-manager.service';
 
 @Component({
   selector: 'app-lista-detalhes-plataforma',
@@ -16,6 +17,7 @@ export class ListaDetalhesPlataformaComponent {
   constructor(
     private databaseService: DatabaseService,
     private route: ActivatedRoute,
+    private modalManager: ModalManagerService,
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +31,10 @@ export class ListaDetalhesPlataformaComponent {
     this.databaseService.getRecorrenciasPlataforma(this.plataforma_id).subscribe((pontos_recorrencia)=>{
       this.pontos_recorrencia = pontos_recorrencia;
     });
+  }
+
+  CalculadoraPontos(plataforma: Plataforma){
+    this.modalManager.openCalculadoraModal(plataforma);
   }
 }
 

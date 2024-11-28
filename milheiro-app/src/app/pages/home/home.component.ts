@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { DatabaseService } from '../../services/database.service';
 import { ModalManagerService } from '../../services/modal-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -51,5 +50,9 @@ export class HomeComponent {
         });
       }
     })
+  }
+
+  CalculadoraPontos(){
+    this.modalManager.openCalculadoraModal();
   }
 }

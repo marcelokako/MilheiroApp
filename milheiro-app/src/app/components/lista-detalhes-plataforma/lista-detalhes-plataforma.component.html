@@ -2,7 +2,12 @@
     <div class="row w-full flex justify-between">
         <h4 class="col-sm-10 text-white py-2 mb-0 pb-0 font-bold col-10">Detalhes {{ plataforma.plataforma }}</h4>
         
-        <button class="col-sm font-semibold px-4 rounded bg-slate-600 text-white hover:bg-slate-500 float-right">
+        <button mat-raised-button class="col-sm font-semibold px-4 rounded "
+        (click)="CalculadoraPontos(plataforma)">
+            Calculadora
+        </button>
+
+        <button mat-raised-button color="primary" class="col-sm font-semibold px-4 rounded ">
             <a routerLink="/dashboard">Voltar ao Dashboard</a>
         </button>
     </div>
@@ -18,9 +23,9 @@
     <mat-tab-group>
       <!-- Aba de Todos os Pontos -->
       <mat-tab label="Todos os Pontos">
-        <div *ngIf="pontos_milhas??[].length > 0; else vazioPontos">
+        <div *ngIf="pontos_milhas.length > 0; else vazioPontos">
           
-            <table class="table">
+            <table class="table w-full">
                 <thead class="border-b">
                     <tr>
                         <th>#</th>
@@ -54,7 +59,7 @@
   
       <!-- Aba de Recorrências -->
       <mat-tab label="Recorrências">
-        <div *ngIf="pontos_recorrencia??[].length > 0; else vazioRecorrencias">
+        <div *ngIf="pontos_recorrencia.length > 0; else vazioRecorrencias">
             <table class="table">
                 <thead class="border-b">
                     <tr>
