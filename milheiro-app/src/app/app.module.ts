@@ -29,10 +29,9 @@ import { PlataformaModalComponent } from './components/plataforma-modal/platafor
 import { AddPontosModalComponent } from './components/add-pontos-modal/add-pontos-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
-  version: 3,
+  version: 4,
   objectStoresMeta: [
     {
       store: 'pessoas',
@@ -52,7 +51,7 @@ const dbConfig: DBConfig = {
         { name: 'pontos', keypath: 'pontos', options: { unique: false } },
         { name: 'valor_total', keypath: 'valor_total', options: { unique: false } },
         { name: 'custo_ponto', keypath: 'custo_ponto', options: { unique: false } },
-        { name: 'updated_at', keypath: 'data', options: { unique: false } },
+        { name: 'updated_at', keypath: 'updated_at', options: { unique: false } },
         { name: 'created_by', keypath: 'created_by', options: { unique: false } },
         { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
@@ -67,8 +66,9 @@ const dbConfig: DBConfig = {
         { name: 'valor', keypath: 'valor', options: { unique: false } },
         { name: 'custo_ponto', keypath: 'custo_ponto', options: { unique: false } },
         { name: 'descricao', keypath: 'descricao', options: { unique: false } },
-        { name: 'data', keypath: 'data', options: { unique: false } },
+        { name: 'data_aquisicao', keypath: 'data_aquisicao', options: { unique: false } },
         { name: 'data_expiracao', keypath: 'data_expiracao', options: { unique: false } },
+        { name: 'recorrencia_id', keypath: 'recorrencia_id', options: { unique: false } },
         { name: 'created_by', keypath: 'created_by', options: { unique: false } },
         { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
@@ -82,8 +82,24 @@ const dbConfig: DBConfig = {
         { name: 'plataforma_destino', keypath: 'plataforma_destino', options: { unique: false } },
         { name: 'pontos', keypath: 'pontos', options: { unique: false } },
         { name: 'taxa', keypath: 'taxa', options: { unique: false } },
-        { name: 'observacao', keypath: 'observacao', options: { unique: false } },
+        { name: 'descricao', keypath: 'descricao', options: { unique: false } },
         { name: 'data', keypath: 'data', options: { unique: false } },
+        { name: 'created_by', keypath: 'created_by', options: { unique: false } },
+        { name: 'created_at', keypath: 'created_at', options: { unique: false } },
+      ]
+    },
+    {
+      store: 'pontos_recorrencia',
+      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeSchema: [
+        { name: 'recorrencia_tipo', keypath: 'recorrencia_tipo', options: { unique: false } },
+        { name: 'ultima_criacao', keypath: 'ultima_criacao', options: { unique: false } },
+        { name: 'proxima_criacao', keypath: 'proxima_criacao', options: { unique: false } },
+        { name: 'pessoa_id', keypath: 'pessoa_id', options: { unique: false } },
+        { name: 'plataforma_id', keypath: 'plataforma_id', options: { unique: false } },
+        { name: 'pontos', keypath: 'pontos', options: { unique: false } },
+        { name: 'valor', keypath: 'valor', options: { unique: false } },
+        { name: 'descricao', keypath: 'descricao', options: { unique: false } },
         { name: 'created_by', keypath: 'created_by', options: { unique: false } },
         { name: 'created_at', keypath: 'created_at', options: { unique: false } },
       ]
