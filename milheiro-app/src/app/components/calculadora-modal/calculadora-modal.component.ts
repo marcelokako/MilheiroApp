@@ -36,7 +36,7 @@ export class CalculadoraModalComponent {
     this.plataformaSelecionada = data;
     this.pontos_disponiveis = data.pontos??0;
     this.valor_ponto = data.custo_ponto??"0,00";
-    this.loadPlataformas(data.pessoa_id);
+    this.loadPlataformas(data.pessoa_id??this.pessoaSelecionada_id);
   }
 
   ngOnInit(): void {
