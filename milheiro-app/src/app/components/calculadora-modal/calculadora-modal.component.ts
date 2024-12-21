@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatabaseService, Pessoa, Plataforma } from '../../services/database.service';
+import { ModalManagerService } from '../../services/modal-manager.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-calculadora-modal',
@@ -31,6 +33,8 @@ export class CalculadoraModalComponent {
   constructor(
     public dialogRef: MatDialogRef<CalculadoraModalComponent>,
     private databaseService: DatabaseService, 
+    private modalManager: ModalManagerService,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: Plataforma
   ) {        
     this.plataformaSelecionada = data;
@@ -75,7 +79,7 @@ export class CalculadoraModalComponent {
   calcularResultado(): void {
     // Cálculo do custo efetivo em pontos
     const custoPontos =
-      this.preco_pontos * this.valor_ponto + this.taxa_embarque_pontos;
+      (this.preco_pontos/1000) * this.valor_ponto + this.taxa_embarque_pontos;
 
     // Cálculo do custo efetivo em dinheiro
     const valorPontosAcumulados =
@@ -102,5 +106,40 @@ export class CalculadoraModalComponent {
   atualizaValoresInputs(): void{  
     this.valor_ponto = this.plataformaSelecionada?.custo_ponto??0;
     this.pontos_disponiveis = this.plataformaSelecionada?.pontos??0
+  }
+
+  AddPonto(){
+    let data_hoje = new Date(Date.now()).toISOString().slice(0,10);
+    let obj_pontos = {
+      "pessoa_id": this.selectPessoa_option,
+      "plataforma_id": this.plataformaSelecionada?.id,
+      "plataforma_nome": this.plataformaSelecionada?.plataforma,
+      "data_aquisicao": data_hoje,
+      "pontos": this.pontos_acumulados,
+      "valor": 0,
+      "data_expiracao": "",
+      "recorrencia_tipo": 'N',
+      "recorrencia_id": 0,
+      "descricao": "Bônus acumulado em compra" + 
+        (!!this.plataformaSelecionada ? " em " + this.plataformaSelecionada?.plataforma : "")
+        + (" em " + data_hoje),
+    };
+    this.modalManager.openAddPontosModal(obj_pontos).subscribe((obj_pontos_add)=>{
+      if(obj_pontos_add){
+        this.databaseService.AddPonto(obj_pontos_add).subscribe({
+          next: (obj_ponto) => {
+            this.snackBar.open(`${obj_ponto.pontos} pontos adicionados com sucesso!`, 'Fechar', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar'],
+            });
+          },
+          error: (e)=>{
+            console.error("Erro ao adicionar ponto: ", e)
+          }
+        });
+      }
+    })
   }
 }
