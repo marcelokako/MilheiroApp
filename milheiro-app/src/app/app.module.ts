@@ -30,6 +30,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ListaDetalhesPlataformaComponent } from './components/lista-detalhes-plataforma/lista-detalhes-plataforma.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CalculadoraModalComponent } from './components/calculadora-modal/calculadora-modal.component';
+import { UsarPontosModalComponent } from './components/usar-pontos-modal/usar-pontos-modal.component';
 
 const dbConfig: DBConfig = {
   name: 'MilhasDB',
@@ -123,6 +124,7 @@ const dbConfig: DBConfig = {
     AddPontosModalComponent,
     ListaDetalhesPlataformaComponent,
     CalculadoraModalComponent,
+    UsarPontosModalComponent,
   ],
   imports: [
     BrowserModule,

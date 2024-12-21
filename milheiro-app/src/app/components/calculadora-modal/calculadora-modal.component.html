@@ -1,6 +1,6 @@
 <div class="modal-content">
     <h2 mat-dialog-title>
-      <mat-icon>calculate</mat-icon> Calculadora: Pontos vs. Dinheiro
+      <mat-icon>calculate</mat-icon> Calculadora: Pontos vs Dinheiro
     </h2>
   
     <div class="p-4 bg-gray-100 rounded shadow mt-4">
@@ -29,7 +29,7 @@
                 [(ngModel)]="plataformaSelecionada"
                 (change)="atualizaValoresInputs()"
                 >
-                    <option *ngFor="let plataforma of plataformas" [ngValue]="plataforma" [selected]="plataformaSelecionada?.id==plataforma.id"
+                    <option *ngFor="let plataforma of plataformas" [ngValue]="plataforma"
                     >
                         {{ plataforma.plataforma }}
                     </option>
@@ -92,7 +92,7 @@
                 (focus)="selecionarTexto(input_valor_ponto)"
               />
             </div>
-          
+            <button mat-button (click)="cancelar()">Usar Pontos</button>
           </div>
   
           <!-- Coluna de Dinheiro -->
@@ -137,6 +137,7 @@
                 (focus)="selecionarTexto(input_pontos_acumulados)"
               />
             </div>
+            <button mat-button (click)="AddPonto()">Cadastrar Pontos</button>
           </div>
         </div>
       </form>
@@ -146,6 +147,7 @@
     <mat-dialog-actions align="start">
       <button mat-button (click)="cancelar()">Cancelar</button>
     </mat-dialog-actions>
+    
   </div>
   
   <!-- Resultado -->

@@ -1,0 +1,80 @@
+<div class="modal-content">
+    <h2 mat-dialog-title><mat-icon>shopping_cart</mat-icon> Gastar Pontos</h2>
+
+    <mat-dialog-content>
+        <form>
+            <div class="form-group w-full flex justify-around">
+                <div class="col-span-4">
+                    <label class="font-bold" for="selectPessoa_option">Pessoa*: </label>
+                    <select id="selectPessoa_option" name="selectPessoa_option"
+                        class="form-control rounded w-full p-3 border"
+                        [(ngModel)]="selectPessoa_option"
+                        (change)="loadPlataformas(selectPessoa_option)"
+                        >
+                        <option *ngFor="let pessoa of pessoas"
+                            class="form-control rounded"
+                            [value]="pessoa.id"
+                            [selected]="pessoa.selected">
+                            {{ pessoa.nome }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-span-4">
+                    <label class="font-bold" for="plataformas">Plataforma*: </label>
+                    <select id="plataformas" name="plataformas"
+                        (change)="carregar_custo_ponto()"
+                        class="form-control rounded w-full p-3 border"
+                        [(ngModel)]="plataformaSelecionada">
+                        <option *ngFor="let plataforma of plataformas" [ngValue]="plataforma">
+                            {{ plataforma.plataforma }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-span-4 mx-1">
+                    <label class="font-bold" for="data_aquisicao">Data do uso*: </label>
+                    <input type="date" name="data_aquisicao"
+                        class="form-control rounded w-full p-3 border"
+                        [(ngModel)]="data_aquisicao">
+                </div>
+            </div>
+
+            <!-- Pontos e Referências -->
+            <div class="mt-3 form-group w-full flex justify-around">
+                <div class="col-span-4 mx-1">
+                    <label class="font-bold" for="pontos">Pontos a gastar*: </label>
+                    <input type="number" name="pontos" step="500"
+                        class="form-control rounded w-full p-3 border" min="0"
+                        (keyup)="carregar_custo_ponto()"
+                        (change)="carregar_custo_ponto()"
+                        [(ngModel)]="pontos" #inputPontos>
+                </div>
+                <div class="col-span-4 mx-1">
+                    <label class="font-bold" for="custo_ponto" title="R$ / 1000 milhas">Custo Milheiro:</label>
+                    <input type="text" name="custo_ponto" readonly
+                        class="form-control rounded w-full p-3 border"
+                        [(ngModel)]="custo_ponto">
+                </div>
+                <div class="col-span-4 mx-1">
+                    <label class="font-bold" for="custo_equivalente" title="Custo equivalente em reais">Custo equivalente:</label>
+                    <input type="text" name="custo_equivalente" readonly
+                        class="form-control rounded w-full p-3 border"
+                        [(ngModel)]="custo_equivalente">
+                </div>
+            </div>
+            <div class="w-full">
+                Pontos disponíveis após uso: <label>{{ pontos_disponiveis }}</label>
+            </div>
+
+            <div class="mt-3 form-group w-full">
+                <label class="font-bold" for="descricao">Descrição: </label>
+                <textarea name="descricao" class="form-control rounded w-full p-3 border resize-none"
+                    [(ngModel)]="descricao"></textarea>
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="cancelar()">Cancelar</button>
+        <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+    </mat-dialog-actions>
+</div>

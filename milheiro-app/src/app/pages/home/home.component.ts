@@ -55,4 +55,24 @@ export class HomeComponent {
   CalculadoraPontos(){
     this.modalManager.openCalculadoraModal();
   }
+
+  UsarPonto(){
+    this.modalManager.openUsarPontosModal().subscribe((obj_pontos_used)=>{
+      if(obj_pontos_used){
+        this.databaseService.AddPonto(obj_pontos_used).subscribe({
+          next: (obj_ponto) => {
+            this.snackBar.open(`${-1*obj_ponto.pontos} pontos usados com sucesso!`, 'Fechar', {
+              duration: 3000, 
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar'],
+            });
+          },
+          error: (e)=>{
+            console.error("Erro ao usar pontos: ", e)
+          }
+        });
+      }
+    })
+  }
 }
