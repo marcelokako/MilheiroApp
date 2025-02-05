@@ -26,7 +26,7 @@ A aplicação é uma PWA (Progressive Web App) que pode ser acessada via navegad
 - ✅ Cálculo automático do custo médio por ponto.  
 - ✅ Opção de adicionar pontos a partir da listagem detalhada ou diretamente pelo menu.  
 - ✅ Calculadora para analisar a média de custo dos pontos.  
-- ❌ **Usar pontos**: funcionalidade para descontar pontos de uma plataforma ainda não implementada.  
+- ✅ **Usar pontos**: funcionalidade para descontar pontos de uma plataforma ainda não implementada.  
 - ❌ **Transferir pontos**: funcionalidade para mover pontos de uma plataforma para outra ainda não implementada.  
 
 ## Tecnologias Utilizadas
