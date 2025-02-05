@@ -43,6 +43,11 @@ export class CalculadoraModalComponent {
     this.loadPlataformas(data.pessoa_id??this.pessoaSelecionada_id);
   }
 
+  trackById(index: number, item: any): number {
+    return item.id; // Garante que o Angular rastreie corretamente os objetos
+  }
+  
+
   ngOnInit(): void {
     this.loadPessoas();
     this.databaseService.pessoaSelecionada$.subscribe(pessoa => {
@@ -125,6 +130,43 @@ export class CalculadoraModalComponent {
         + (" em " + data_hoje),
     };
     this.modalManager.openAddPontosModal(obj_pontos).subscribe((obj_pontos_add)=>{
+      if(obj_pontos_add){
+        this.databaseService.AddPonto(obj_pontos_add).subscribe({
+          next: (obj_ponto) => {
+            this.snackBar.open(`${obj_ponto.pontos} pontos adicionados com sucesso!`, 'Fechar', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar'],
+            });
+          },
+          error: (e)=>{
+            console.error("Erro ao adicionar ponto: ", e)
+          }
+        });
+      }
+    })
+  }
+
+  UsarPonto(){
+    let data_hoje = new Date(Date.now()).toISOString().slice(0,10);
+    let obj_pontos = {
+      "pessoa_id": this.selectPessoa_option,
+      "plataforma": this.plataformaSelecionada,
+      "plataformas": this.plataformas,
+      "plataforma_id": this.plataformaSelecionada?.id,
+      "plataforma_nome": this.plataformaSelecionada?.plataforma,
+      "data_aquisicao": data_hoje,
+      "pontos": this.preco_pontos,
+      "valor": 0,
+      "data_expiracao": "",
+      "recorrencia_tipo": 'N',
+      "recorrencia_id": 0,
+      "descricao": "Pontos usados" + 
+        (!!this.plataformaSelecionada ? " em plataforma " + this.plataformaSelecionada?.plataforma : "")
+        + (" em " + data_hoje),
+    };
+    this.modalManager.openUsarPontosModal(obj_pontos).subscribe((obj_pontos_add)=>{
       if(obj_pontos_add){
         this.databaseService.AddPonto(obj_pontos_add).subscribe({
           next: (obj_ponto) => {

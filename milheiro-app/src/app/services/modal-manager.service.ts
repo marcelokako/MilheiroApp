@@ -36,11 +36,14 @@ export class ModalManagerService {
       pessoa_id: number,
       plataforma_id?: number,
       plataforma_nome?: string,
-      data_aquisicao? :string,
       pontos: number,
       valor: number,
-      data_expiracao?: string,
+      custo_ponto?: number,
       descricao?: string,
+      data_aquisicao? :string,
+      data_expiracao?: string,
+      created_at?: string,
+      created_by?: number,
       recorrencia_tipo: string,
       recorrencia_id: number
     }): Observable<any> {

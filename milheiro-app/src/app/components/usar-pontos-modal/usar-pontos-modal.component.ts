@@ -13,25 +13,29 @@ export class UsarPontosModalComponent {
   pessoas: Pessoa[] = [];
   plataformas: Plataforma[] = [];
   plataformaSelecionada?: Plataforma;
+  plataformaSelecionada_id: number = 0;
   data_aquisicao: string = ''; // data de uso
   pontos: number = 0;
   pontos_disponiveis: number = 0;
   custo_ponto: number = 0;
   custo_equivalente: string = "0,00";
   descricao: string = '';
+  flag_inject: boolean = false;
 
   constructor(
     private databaseService: DatabaseService, 
     public dialogRef: MatDialogRef<UsarPontosModalComponent>,
     @Inject(MAT_DIALOG_DATA) public obj: any
   ) {
-    if (obj) {
-      this.plataformaSelecionada = obj.plataforma
+    if (obj) {     
+      this.flag_inject = true;
+      this.plataformas = obj.plataformas
+      this.plataformaSelecionada = obj.plataforma;
+      this.plataformaSelecionada_id = obj.plataforma.id;
       this.data_aquisicao = obj.data_aquisicao || new Date(Date.now()).toISOString().slice(0,10);
       this.pontos = obj.pontos || 0;
       this.pontos_disponiveis = obj.plataforma?.pontos||0 - this.pontos;
       this.descricao = obj.descricao || '';
-      this.carregar_custo_ponto();
     }
   }
   
@@ -40,7 +44,9 @@ export class UsarPontosModalComponent {
     this.databaseService.pessoaSelecionada$.subscribe(pessoa => {
       this.pessoaSelecionada_id = pessoa ? pessoa.id??0 : 0;
       this.selectPessoa_option = this.pessoaSelecionada_id
-      this.loadPlataformas(this.pessoaSelecionada_id);
+      if(!this.flag_inject){
+        this.loadPlataformas(this.pessoaSelecionada_id);
+      }
     });
     this.carregar_custo_ponto();
   }
@@ -54,6 +60,9 @@ export class UsarPontosModalComponent {
     this.databaseService.getPlataformasPessoa(Number(pessoa_id)).subscribe((plataformas) => {
       this.plataformas = plataformas;
     });
+    console.log("load plataformas: ", this.plataformaSelecionada);
+    console.log("load plataformas: ", this.plataformas);
+
   }
 
   loadPessoas() {
